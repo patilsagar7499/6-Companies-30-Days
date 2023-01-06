@@ -1,39 +1,25 @@
-import java.util.Stack;
-public class practical3 {
-    static int evaluatePostfix(String exp)
-    {
-        Stack<Integer>stack=new Stack<>();
-        for(int i=0;i<exp.length();i++)
-        {
-            char c=exp.charAt(i);
-            if (Character.isDigit(c))
-            stack.push(c-'0');
-            else 
-            {
-                int val1=stack.pop();
-                int val2=stack.pop();
-                switch(c)
-                {
-                    case '+':
-                    stack.push(val2+val1);
-                    break;
-                    case '-':
-                    stack.push(val2-val1);
-                    break;
-                    case '/':
-                    stack.push(val2/val1);
-                    break;
-                    case '*':
-                    stack.push(val2*val1);
-                    break;
-                }
-            }
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> st = new Stack<>();
+        for(String t : tokens){
+            if("+-*/".contains(t))
+              st.push(eval(st.pop(), st.pop(), t));
+            else
+              st.push(Integer.parseInt(t));
         }
-        return stack.pop();
+
+       
+        return st.pop();
+
     }
-    public static void main(String[] args)
-    {
-        String exp="231*+9-";
-        System.out.println("Exp="+evaluatePostfix(exp));
-    }
+     private int eval(int b, int a, String op){
+            if("+".equals(op))
+            return a+b;
+            else if("-".equals(op))
+            return a-b;
+            else if("*".equals(op))
+            return a*b;
+            else
+            return a/b;
+        }
 }
